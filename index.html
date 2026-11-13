@@ -60,7 +60,7 @@
 <!-- /Google tag -->
 
 <!-- Общие ассеты хаба -->
-<script src="https://prog815.github.io/share.js?v=1.0.1" defer></script>
+<script src="https://prog815.github.io/share.js?v=1.0.3" defer></script>
 
 <style>
   :root{
@@ -716,13 +716,6 @@
         badgesHtml += '<span class="status-badge badge-type">' + highlight(r.schem, queryTokens) + '</span>';
     }
 
-    // Копирование всех 15 полей
-    var copyStr = [
-      r.id, r.sernum, r.serdate, r.sersrok, r.name, r.namedoc, r.schem,
-      r.lab, r.orgser, r.zayav, r.zayavrek, r.srokend, r.status_label,
-      r.is_expired, r.source_order
-    ].join('; ');
-
     // Детали (сетка)
     var details = [];
     if (r.sernum) {
@@ -768,7 +761,6 @@
       '<div class="details-grid">' + details.join('') + '</div>' +
       extraBlocks +
       '<div class="actions">' +
-        '<button type="button" class="action-btn btn-copy-row" data-str="' + esc(copyStr) + '" title="Скопировать все данные одной строкой" aria-label="Скопировать строку с данными">📋 строка</button>' +
         '<div class="share-slot" data-id="' + r.id + '" data-name="' + esc(cardTitle) + '">' +
           '<button type="button" class="action-btn btn-share-fallback" data-id="' + r.id + '" data-name="' + esc(cardTitle) + '" title="Поделиться этой записью" aria-label="Поделиться записью">📤 Поделиться</button>' +
         '</div>' +
@@ -803,17 +795,6 @@
   els.more.addEventListener('click', appendPage);
 
   els.results.addEventListener('click', function(ev){
-    var btnCopy = ev.target.closest('.btn-copy-row');
-    if(btnCopy) {
-      var text = btnCopy.getAttribute('data-str');
-      navigator.clipboard.writeText(text).then(function(){
-        showToast('Строка скопирована');
-        try { if (window.ym) window.ym(105817342, 'reachGoal', 'fstec_szi_copy_row'); } catch (e) {}
-        try { if (window.gtag) window.gtag('event', 'copy_row', { catalog: 'fstec_szi' }); } catch (e) {}
-      });
-      return;
-    }
-
     var btnShare = ev.target.closest('.btn-share-fallback');
     if(btnShare) {
       var id = btnShare.getAttribute('data-id');
